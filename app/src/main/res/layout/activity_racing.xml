@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Racing">
+
+    <SeekBar
+        android:id="@+id/seek1"
+        android:layout_width="548dp"
+        android:layout_height="57dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="80dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <SeekBar
+        android:id="@+id/seek2"
+        android:layout_width="548dp"
+        android:layout_height="57dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/seek1" />
+
+    <SeekBar
+        android:id="@+id/seek3"
+        android:layout_width="548dp"
+        android:layout_height="57dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/seek2" />
+
+    <Button
+        android:id="@+id/btnStart"
+        android:layout_width="186dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="24dp"
+        android:text="Start"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/seek3" />
+
+    <TextView
+        android:id="@+id/txtResultBet1"
+        android:layout_width="95dp"
+        android:layout_height="58dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="80dp"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:text="20$"
+        app:layout_constraintStart_toEndOf="@+id/seek1"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtResultBet2"
+        android:layout_width="95dp"
+        android:layout_height="58dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:text="20$"
+        app:layout_constraintStart_toEndOf="@+id/seek2"
+        app:layout_constraintTop_toBottomOf="@+id/txtResultBet1" />
+
+    <TextView
+        android:id="@+id/txtResultBet3"
+        android:layout_width="95dp"
+        android:layout_height="58dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="24dp"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:text="20$"
+        app:layout_constraintStart_toEndOf="@+id/seek3"
+        app:layout_constraintTop_toBottomOf="@+id/txtResultBet2" />
+</androidx.constraintlayout.widget.ConstraintLayout>
