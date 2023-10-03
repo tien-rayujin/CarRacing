@@ -4,10 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Racing">
+    tools:context=".Racing"
+    android:background="@drawable/terrain">
+
 
     <SeekBar
-        android:id="@+id/seek1"
+        android:id="@+id/seekBar1"
         android:layout_width="548dp"
         android:layout_height="57dp"
         android:layout_marginStart="32dp"
@@ -16,32 +18,33 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <SeekBar
-        android:id="@+id/seek2"
+        android:id="@+id/seekBar2"
         android:layout_width="548dp"
         android:layout_height="57dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="24dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/seek1" />
+        app:layout_constraintTop_toBottomOf="@+id/seekBar1" />
 
     <SeekBar
-        android:id="@+id/seek3"
+        android:id="@+id/seekBar3"
         android:layout_width="548dp"
         android:layout_height="57dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="24dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/seek2" />
+        app:layout_constraintTop_toBottomOf="@+id/seekBar2" />
 
     <Button
         android:id="@+id/btnStart"
         android:layout_width="186dp"
         android:layout_height="47dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="4dp"
         android:text="Start"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.058"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/seek3" />
+        app:layout_constraintTop_toBottomOf="@+id/seekBar3" />
 
     <TextView
         android:id="@+id/txtResultBet1"
@@ -53,7 +56,7 @@
         android:textSize="20sp"
         android:textStyle="bold"
         android:text="20$"
-        app:layout_constraintStart_toEndOf="@+id/seek1"
+        app:layout_constraintStart_toEndOf="@+id/seekBar1"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -66,7 +69,7 @@
         android:textSize="20sp"
         android:textStyle="bold"
         android:text="20$"
-        app:layout_constraintStart_toEndOf="@+id/seek2"
+        app:layout_constraintStart_toEndOf="@+id/seekBar2"
         app:layout_constraintTop_toBottomOf="@+id/txtResultBet1" />
 
     <TextView
@@ -79,6 +82,37 @@
         android:textSize="20sp"
         android:textStyle="bold"
         android:text="20$"
-        app:layout_constraintStart_toEndOf="@+id/seek3"
+        app:layout_constraintStart_toEndOf="@+id/seekBar3"
         app:layout_constraintTop_toBottomOf="@+id/txtResultBet2" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="70dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="508dp"
+        android:layout_marginTop="28dp"
+        android:text="Currency"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtCurrency"
+        android:layout_width="115dp"
+        android:layout_height="19dp"
+        android:layout_marginStart="8dp"
+        android:text="100$"
+        android:gravity="right"
+        app:layout_constraintStart_toEndOf="@+id/textView3"
+        app:layout_constraintTop_toTopOf="@+id/textView3" />
+
+    <Button
+        android:id="@+id/btnBackToBet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:text="Back to Bet"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

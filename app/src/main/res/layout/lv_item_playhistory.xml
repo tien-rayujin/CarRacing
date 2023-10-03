@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imgCarHistory"
+        android:layout_width="61dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/car1_big" />
+
+    <TextView
+        android:id="@+id/txtCarRound"
+        android:layout_width="100dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="0dp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:text="Round 133"
+        app:layout_constraintStart_toEndOf="@+id/imgCarHistory"
+        app:layout_constraintTop_toTopOf="@+id/imgCarHistory" />
+
+    <TextView
+        android:id="@+id/txtCarCurrentMoney"
+        android:layout_width="84dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginRight="5dp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:text="4000$"
+        app:layout_constraintStart_toEndOf="@+id/txtCarRound"
+        app:layout_constraintTop_toTopOf="@+id/txtCarRound" />
+</androidx.constraintlayout.widget.ConstraintLayout>
