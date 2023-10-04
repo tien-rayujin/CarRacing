@@ -11,23 +11,21 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.raekyo.carracing.listView.PlayHistory;
-
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class Betting extends AppCompatActivity {
     TextView txtCarBetResult1, txtCarBetResult2, txtCarBetResult3;
     Button btnCar1Bet, btnCar1UnBet;
     Button btnCar2Bet, btnCar2UnBet;
     Button btnCar3Bet, btnCar3UnBet;
-    Button btnGotoColosseum;
+    Button btnGotoColosseum, btnLogout;
 
     TextView txtCurrency;
     Spinner spinnerCoinRatio;
 
     //============================================================================//
     private BettingData bettingData;
+    private User userLogin;
     private String[] coinRatioOptions = {"10", "20", "50", "All-in"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,10 +35,14 @@ public class Betting extends AppCompatActivity {
         bindingSource();
 
         Intent intent = getIntent();
+        userLogin = (User) intent.getSerializableExtra("userLogin");
         bettingData = (BettingData) intent.getSerializableExtra("bettingData");
 
-        if(bettingData == null)
-            bettingData = new BettingData(100, 0, 0, 0);
+        if(bettingData == null){
+            bettingData = new BettingData(999, 0, 0, 0);
+            Toast.makeText(this, "Something went wrong, ERR #er002", Toast.LENGTH_SHORT).show();
+            return;
+        }
         else {
             // reset bet coin
             bettingData.setBetCar1(0);
@@ -69,6 +71,7 @@ public class Betting extends AppCompatActivity {
         btnCar3UnBet = (Button) findViewById(R.id.btnCar3UnBet);
 
         btnGotoColosseum = (Button) findViewById(R.id.btnGotoColosseum);
+        btnLogout = (Button) findViewById(R.id.btnLogout);
         txtCurrency = (TextView) findViewById(R.id.txtCurrency);
         spinnerCoinRatio = (Spinner) findViewById(R.id.spinnerCoinRatio);
     }
@@ -120,6 +123,25 @@ public class Betting extends AppCompatActivity {
                 onGoToColosseumClick(view);
             }
         });
+
+        //--------------------Logout--------------------//
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(userLogin != null) {
+                    // reset properties
+                    bettingData = new BettingData(0, 0, 0, 0);
+                    userLogin = null;
+
+                    // toast
+                    Toast.makeText(Betting.this, "See you again next time !!!", Toast.LENGTH_SHORT).show();
+
+                    Intent loginIntent = new Intent(Betting.this, SignIn.class);
+                    startActivity(loginIntent);
+                }
+            }
+        });
+
     }
 
     private void updateUI() {
@@ -271,15 +293,17 @@ public class Betting extends AppCompatActivity {
         }
 
         if(gameEnd) {
-            Intent intent = new Intent(Betting.this, Racing.class);
+            Intent intent = new Intent(Betting.this, Result.class);
             intent.putExtra("bettingData", (Serializable) bettingData);
             startActivity(intent);
             return;
         }
 
-        // Start the racing activity and pass bettingData using Intent
+        // Start the racing activity and pass bettingData, userLogin
         Intent intent = new Intent(Betting.this, Racing.class);
         intent.putExtra("bettingData", (Serializable) bettingData);
+        intent.putExtra("userLogin", (Serializable) userLogin);
+
         startActivity(intent);
     }
 }

@@ -13,8 +13,19 @@
         android:theme="@style/Theme.CarRacing"
         tools:targetApi="31">
         <activity
+            android:name=".SignIn"
+            android:exported="true"
+            android:screenOrientation="landscape">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".Result"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="landscape" />
         <activity
             android:name=".Betting"
             android:exported="true"

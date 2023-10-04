@@ -4,20 +4,22 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
-import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.raekyo.carracing.listView.PlayHistory;
-import com.raekyo.carracing.listView.PlayHistoryAdapter;
+import com.raekyo.carracing.listView.RacingResult;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 
 public class Result extends AppCompatActivity {
 
-    Button btnPlayAgain;
-    ListView lvPlayHistory, lvHighScore;
+    Button btnPlayAgain, btnLogout;
+    TextView txtGameResult;
 
-    ArrayList<PlayHistory> playHistoryArrayList;
+    User userLogin;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,20 +28,41 @@ public class Result extends AppCompatActivity {
         bindingSource();
 
         Intent intent = getIntent();
-        playHistoryArrayList = (ArrayList<PlayHistory>) intent.getSerializableExtra("playHistoryArrayList");
+        RacingResult res = (RacingResult) intent.getSerializableExtra("racingResult");
+        userLogin = (User) intent.getSerializableExtra("userLogin");
+        int totalScore = res.getTotalMoney();
 
-        if(playHistoryArrayList == null) {
-            playHistoryArrayList = new ArrayList<>();
-            playHistoryArrayList.add(new PlayHistory(R.drawable.car1_1, "Round 1", "400"));
-        }
+        txtGameResult.setText("Your score is: " + totalScore);
 
-        PlayHistoryAdapter playHistoryAdapter = new PlayHistoryAdapter(Result.this, playHistoryArrayList, R.layout.lv_item_playhistory);
-        lvPlayHistory.setAdapter(playHistoryAdapter);
+        btnPlayAgain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // reset money to play gain
+                userLogin.setMoney(100);
+                Intent bettingIntent = new Intent(Result.this, Betting.class);
+                bettingIntent.putExtra("userLogin", (Serializable) userLogin);
+                bettingIntent.putExtra("bettingData", (Serializable) new BettingData(userLogin.getMoney(), 0, 0, 0));
+                startActivity(bettingIntent);
+            }
+        });
+
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(userLogin != null) {
+                    // toast
+                    Toast.makeText(Result.this, "See you again next time !!!", Toast.LENGTH_SHORT).show();
+
+                    Intent loginIntent = new Intent(Result.this, SignIn.class);
+                    startActivity(loginIntent);
+                }
+            }
+        });
     }
 
     private void bindingSource() {
         btnPlayAgain = (Button) findViewById(R.id.btnPlayAgain);
-        lvPlayHistory = (ListView) findViewById(R.id.lvPlayHistory);
-        lvHighScore = (ListView) findViewById(R.id.lvHighScore);
+        btnLogout = (Button) findViewById(R.id.btnLogout);
+        txtGameResult = (TextView) findViewById(R.id.txtGameResult);
     }
 }

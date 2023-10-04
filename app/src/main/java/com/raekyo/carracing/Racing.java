@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.raekyo.carracing.listView.PlayHistory;
+import com.raekyo.carracing.listView.RacingResult;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -30,15 +31,15 @@ public class Racing extends AppCompatActivity {
     private int seekBarBoundaries = 1000;
     private boolean isAnimationRunning = false;
     private BettingData bettingData;
+    private User userLogin;
     private boolean keepCurrentBet = false;
 
     //--------------------------------------------------------------------
     TextView txtCurrency;
     boolean hasWinner = false;
 
-    int carWinner_img = 0;
     int roundCount = 0;
-    ArrayList<PlayHistory> playHistoryArrayList = new ArrayList<>();
+    RacingResult racingResult;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,8 +48,11 @@ public class Racing extends AppCompatActivity {
         bindingSource();
 
         Intent intent = getIntent();
+        userLogin = (User) intent.getSerializableExtra("userLogin");
         bettingData = (BettingData) intent.getSerializableExtra("bettingData");
         txtCurrency.setText(String.valueOf(bettingData.getCurrency()) + "$");
+        int totalBet = bettingData.getBetCar1() + bettingData.getBetCar2() + bettingData.getBetCar3();
+        racingResult = new RacingResult(0, (bettingData.getCurrency() + totalBet));
         txtResultBet1.setText(String.valueOf(bettingData.getBetCar1()) + "$");
         txtResultBet2.setText(String.valueOf(bettingData.getBetCar2()) + "$");
         txtResultBet3.setText(String.valueOf(bettingData.getBetCar3()) + "$");
@@ -76,7 +80,7 @@ public class Racing extends AppCompatActivity {
                     seekBar2.setProgress(0);
                     seekBar3.setProgress(0);
                     hasWinner = false;
-                    roundCount++;
+                    racingResult.setRound(++roundCount);
                     txtCurrency.setText(String.valueOf(bettingData.getCurrency()) + "$");
 
                     // check if currency enough to playAgain
@@ -104,11 +108,13 @@ public class Racing extends AppCompatActivity {
                 if(isGameEnd) {
                     // go to Result page
                     Intent resultIntent = new Intent(Racing.this, Result.class);
-                    resultIntent.putExtra("playHistoryArrayList", (Serializable) playHistoryArrayList);
+                    resultIntent.putExtra("racingResult", (Serializable) racingResult);
+                    resultIntent.putExtra("userLogin", (Serializable) userLogin);
                     startActivity(resultIntent);
                     return;
                 }
                 Intent betIntent = new Intent(Racing.this, Betting.class);
+                betIntent.putExtra("userLogin", (Serializable) userLogin);
                 betIntent.putExtra("bettingData", (Serializable) bettingData);
                 startActivity(betIntent);
             }
@@ -121,6 +127,7 @@ public class Racing extends AppCompatActivity {
         seekBar3 = (SeekBar) findViewById(R.id.seekBar3);
         btnStart = (Button) findViewById(R.id.btnStart);
         btnBackToBet = (Button) findViewById(R.id.btnBackToBet);
+        btnBackToBet.setEnabled(false);
         txtResultBet1 = (TextView) findViewById(R.id.txtResultBet1);
         txtResultBet2 = (TextView) findViewById(R.id.txtResultBet2);
         txtResultBet3 = (TextView) findViewById(R.id.txtResultBet3);
@@ -138,29 +145,28 @@ public class Racing extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                animateSeekBar(seekBar1, txtResultBet1, seekThumbAnim1, bettingData.getBetCar1(), R.drawable.car1_1);
+                animateSeekBar(seekBar1, txtResultBet1, seekThumbAnim1, bettingData.getBetCar1());
             }
         }).start();
 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                animateSeekBar(seekBar2, txtResultBet2, seekThumbAnim2, bettingData.getBetCar2(), R.drawable.car2_1);
+                animateSeekBar(seekBar2, txtResultBet2, seekThumbAnim2, bettingData.getBetCar2());
             }
         }).start();
 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                animateSeekBar(seekBar3, txtResultBet3, seekThumbAnim3, bettingData.getBetCar3(), R.drawable.car3_1);
+                animateSeekBar(seekBar3, txtResultBet3, seekThumbAnim3, bettingData.getBetCar3());
             }
         }).start();
 
         keepCurrentBet = true;
-        playHistoryArrayList.add(new PlayHistory(carWinner_img, "Round " + roundCount, String.valueOf(bettingData.getCurrency())));
     }
 
-    private void animateSeekBar(SeekBar seekBar, TextView resultTextView, AnimationDrawable seekThumbAnim, int bettingCarValue, int car_img) {
+    private void animateSeekBar(SeekBar seekBar, TextView resultTextView, AnimationDrawable seekThumbAnim, int bettingCarValue) {
         int currentProgress = 0;
         // reset result state
         handler.post(new Runnable() {
@@ -201,11 +207,13 @@ public class Racing extends AppCompatActivity {
                     public void run() {
                         if(!hasWinner) {
                             hasWinner = true;
-                            carWinner_img = car_img;
+                            btnBackToBet.setEnabled(true);
                             resultTextView.setTextColor(Color.YELLOW);
                             resultTextView.setBackgroundColor(Color.GREEN);
                             // add money if win
                             bettingData.setCurrency(bettingData.getCurrency() + bettingCarValue*2);
+                            // check money to save total money
+                            racingResult.setTotalMoney(racingResult.getTotalMoney() + bettingCarValue*2);
 
                         }else {
                             resultTextView.setTextColor(Color.WHITE);

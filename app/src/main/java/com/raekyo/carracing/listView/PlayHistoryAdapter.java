@@ -41,7 +41,7 @@ public class PlayHistoryAdapter extends BaseAdapter
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(layout, null);
+        view = inflater.inflate(layout, null);
 
         ImageView imgCarHistory = (ImageView) view.findViewById(R.id.imgCarHistory);
         TextView txtCarRound = (TextView) view.findViewById(R.id.txtCarRound);
