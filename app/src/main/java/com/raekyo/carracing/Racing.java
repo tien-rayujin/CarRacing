@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -40,12 +41,16 @@ public class Racing extends AppCompatActivity {
 
     int roundCount = 0;
     RacingResult racingResult;
+    MediaPlayer bgm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_racing);
 
         bindingSource();
+
+        bgm = MediaPlayer.create(Racing.this, R.raw.car_sound);
+        bgm.setLooping(true);
 
         Intent intent = getIntent();
         userLogin = (User) intent.getSerializableExtra("userLogin");
@@ -83,6 +88,8 @@ public class Racing extends AppCompatActivity {
                     racingResult.setRound(++roundCount);
                     txtCurrency.setText(String.valueOf(bettingData.getCurrency()) + "$");
 
+
+
                     // check if currency enough to playAgain
                     int betCar1 = bettingData.getBetCar1();
                     int betCar2 = bettingData.getBetCar2();
@@ -97,6 +104,9 @@ public class Racing extends AppCompatActivity {
                         txtCurrency.setText(String.valueOf(bettingData.getCurrency()) + "$");
                     }
                     startSeekBarAnimations();
+
+                    // background music
+                    bgm.start();
                 }
             }
         });
@@ -105,6 +115,7 @@ public class Racing extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 boolean isGameEnd = bettingData.getCurrency() <= 0;
+                bgm.stop();
                 if(isGameEnd) {
                     // go to Result page
                     Intent resultIntent = new Intent(Racing.this, Result.class);
@@ -164,6 +175,7 @@ public class Racing extends AppCompatActivity {
         }).start();
 
         keepCurrentBet = true;
+        bgm.stop();
     }
 
     private void animateSeekBar(SeekBar seekBar, TextView resultTextView, AnimationDrawable seekThumbAnim, int bettingCarValue) {
@@ -210,6 +222,7 @@ public class Racing extends AppCompatActivity {
                             btnBackToBet.setEnabled(true);
                             resultTextView.setTextColor(Color.YELLOW);
                             resultTextView.setBackgroundColor(Color.GREEN);
+                            Toast.makeText(Racing.this, "You have won with Money: + " +bettingCarValue*2, Toast.LENGTH_SHORT).show();
                             // add money if win
                             bettingData.setCurrency(bettingData.getCurrency() + bettingCarValue*2);
                             // check money to save total money

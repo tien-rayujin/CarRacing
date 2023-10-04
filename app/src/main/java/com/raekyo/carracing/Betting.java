@@ -3,6 +3,7 @@ package com.raekyo.carracing;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -22,6 +23,7 @@ public class Betting extends AppCompatActivity {
 
     TextView txtCurrency;
     Spinner spinnerCoinRatio;
+    MediaPlayer bgm;
 
     //============================================================================//
     private BettingData bettingData;
@@ -33,6 +35,10 @@ public class Betting extends AppCompatActivity {
         setContentView(R.layout.activity_betting);
 
         bindingSource();
+
+        bgm = MediaPlayer.create(Betting.this, R.raw.background);
+        bgm.setLooping(true);
+        bgm.start();
 
         Intent intent = getIntent();
         userLogin = (User) intent.getSerializableExtra("userLogin");
@@ -135,7 +141,7 @@ public class Betting extends AppCompatActivity {
 
                     // toast
                     Toast.makeText(Betting.this, "See you again next time !!!", Toast.LENGTH_SHORT).show();
-
+                    bgm.stop();
                     Intent loginIntent = new Intent(Betting.this, SignIn.class);
                     startActivity(loginIntent);
                 }
@@ -287,6 +293,7 @@ public class Betting extends AppCompatActivity {
         // check if valid bet
         boolean validBet = isValidBet();
         boolean gameEnd = isGameEnd();
+        bgm.stop();
         if(!validBet) {
             Toast.makeText(this, "You must bet before go to the race", Toast.LENGTH_SHORT).show();
             return;
